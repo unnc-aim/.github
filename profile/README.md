@@ -1,4 +1,4 @@
-# 欢迎回到UNNC RoboMaster AIR战队  
+# 欢迎回到UNNC RoboMaster AIM战队  
 
 __本组织开放给所有AIR战队内成员使用，所有成员需遵守以下规范：__
 ## __1. 仓库使用规范__  
