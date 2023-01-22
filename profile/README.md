@@ -42,3 +42,6 @@ Vision-VSCode-PowerRune**
 * 阶段性成果没有显著问题的按照版本号命名
 
 * 保证所有功能稳定可靠的才可merge到master分支
+
+### 1.4 代码规范
+[点击此处跳转](https://github.com/UNNC-AIM/.github/blob/v0.2/profile/standard.md)
