@@ -1,0 +1,16 @@
+{
+    "cSpell.words": [
+        "Altium",
+        "Arduino",
+        "autopep",
+        "Clion",
+        "HEADERFILE",
+        "ifndef",
+        "Keil",
+        "Robo",
+        "UNNC"
+    ],
+    "markdownlint.config": {
+        "no-inline-html": false
+    }
+}
