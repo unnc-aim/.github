@@ -10,7 +10,4 @@
         "Robo",
         "UNNC"
     ],
-    "markdownlint.config": {
-        "no-inline-html": false
-    }
 }
