@@ -46,7 +46,7 @@
 
 - 保证所有功能稳定可靠的才可 merge 到 main 分支
 
-### 1.4 Git Message 规范
+### 1.4 Git Message Regulation
 
 1. 推荐的 Git 提交信息格式
 
