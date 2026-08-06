@@ -1,6 +1,6 @@
 ---
 name: aim-common-rules
-description: UNNC AIM team's repository and code standards. Covers repository naming (competition / aim- academic-year / reusable), branch and Conventional Commits rules, and Python (autopep8 / PEP 8) and C++ (clang-format / clang-tidy) formatting, with ready-to-copy canonical rule files. Use when creating or naming a repository, validating a ROS2 package.xml name, creating a branch, writing a git commit message, or setting up Python or C++ formatting (.clang-format / setup.cfg / .clang-tidy).
+description: UNNC AIM team's repository and code standards. Covers repository naming (competition / aim- academic-year / reusable), branch and Conventional Commits rules, and Python (autopep8 / PEP 8) and C++ (clang-format / clang-tidy) formatting, with ready-to-copy canonical rule files. Use when creating or naming a repository, validating a ROS2 package.xml name, creating a branch, writing a git commit message, composing a competition workspace (git submodules under src/), or setting up Python or C++ formatting (.clang-format / setup.cfg / .clang-tidy).
 ---
 
 # UNNC AIM Team — Repository & Code Standards
@@ -20,6 +20,7 @@ The written docs remain the source of truth; this skill turns them into actionab
 | Task | Read | Copy this file |
 |---|---|---|
 | Create / name a repo, validate a ROS2 package name | [references/repo-naming.md](references/repo-naming.md) | — |
+| Clone & organize a competition **workspace** (git submodules) | [references/workspace-organization.md](references/workspace-organization.md) | — |
 | Create a branch, write a commit message | [references/git-workflow.md](references/git-workflow.md) | — |
 | Format / configure **Python** | [references/python-formatting.md](references/python-formatting.md) | [assets/setup.cfg](assets/setup.cfg) |
 | Format / configure **C++** | [references/cpp-formatting.md](references/cpp-formatting.md) | [assets/.clang-format](assets/.clang-format) + [assets/.clang-tidy](assets/.clang-tidy) |
@@ -81,3 +82,4 @@ This skill lives in the team's org repo `unnc-aim/.github`. Since Claude Code lo
 - The vendored `ros2_hik_camera/.clang-tidy` uses `lower_case` variables, which **conflicts** with the written `standard.cpp.md` (`camelBack`). New repos follow the written standard; the team should reconcile. Details in cpp-formatting.md.
 - Python line length is **79** (matches the `autopep8` default used in `aim-py-2526-courseworks` CI). Changing it to 99/100 would break that repo's CI.
 - `standard.cpp.md` examples show 4-space indent, but the team's actual `.clang-format` (Google base) uses **2 spaces** — the `.clang-format` wins.
+- **Inside a competition workspace** (`*_ws`, e.g. `26RC_R2_ws`): add competition-prefixed repos as git submodules under `src/` with the prefix **stripped** (`26RC_R2_arm_controller` → `src/arm_controller`). The prefix is redundant — the workspace name already carries the year/match/robot. See [references/workspace-organization.md](references/workspace-organization.md).
