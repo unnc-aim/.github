@@ -113,3 +113,41 @@
 
 - [C++](standard.cpp.md)
 - [Python](standard.py.md)
+
+## **2. AI 协作 Skill（aim-common-rules）**
+
+上述全部规范已封装为一个 Claude Code / agentic skill：`aim-common-rules`，位于本仓库 `.claude/skills/aim-common-rules/`。安装后，Claude 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ 代码**等场景自动调用本规范。
+
+### 2.1 安装（交互式，可选目标位置）
+
+在任意目录执行：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.claude/skills/aim-common-rules/install.sh | bash
+```
+
+在终端里运行会弹出交互菜单选择安装位置（`curl | bash` 或 CI 等非交互环境默认走选项 1；也可用 `AIM_INSTALL_CHOICE=2 bash install.sh` 静默指定，或 `AIM_INSTALL_DEST=/path bash install.sh` 等价于选项 5）：
+
+| 选项 | 安装位置 | 适用场景 |
+| --- | --- | --- |
+| 1 | `~/.claude/skills/`（全局，**推荐**） | Claude Code 用户，所有项目默认可用 |
+| 2 | `./.claude/skills/`（本项目） | Claude Code 用户，随仓库提交共享给全队 |
+| 3 | `./.agents/` | Cursor / Cline 等其他 agent 工具或自定义 |
+| 4 | 当前仓库根目录（仅规则文件） | **不使用 Claude Code 的成员**：拷贝 `.clang-format` / `.clang-tidy` / `setup.cfg` |
+| 5 | 自定义路径 | 你指定任意目录 |
+
+> 代码来自战队自有仓库，可放心执行；本地也可直接 `bash .claude/skills/aim-common-rules/install.sh`。
+
+### 2.2 默认使用（Claude Code）
+
+全局安装后**无需任何额外配置**：skill 会根据其描述在相关场景**自动触发**；也可在对话中手动调用 `/aim-common-rules`。
+
+### 2.3 更新
+
+规范更新后，**重新执行 2.1 的同一行命令**即可覆盖更新。
+
+### 2.4 不使用 Claude Code 的成员
+
+运行安装脚本并选 **选项 4**，会自动把格式化规则文件（`.clang-format` / `.clang-tidy` / `setup.cfg`）拷贝到当前仓库根目录；若已存在同名文件，则另存为 `*.aim-common-rules`，按提示合并即可。之后你的编辑器 / `clang-format` / `autopep8` / CI 会自动读取这些规则。
+
+规范全文也可直接在 GitHub 阅读：[`.claude/skills/aim-common-rules/references`](https://github.com/unnc-aim/.github/tree/main/.claude/skills/aim-common-rules/references)（仓库命名 / Git 流程 / Python / C++ 格式化）。
