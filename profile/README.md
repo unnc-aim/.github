@@ -1,4 +1,4 @@
-# 欢迎回到 UNNC RoboMaster AIM 战队
+# 欢迎回到 UNNC AIM Robotics 战队
 
 **本组织开放给所有 AIM 战队内成员使用，所有成员需遵守以下规范：**
 
@@ -6,45 +6,50 @@
 
 ### 1.1 仓库命名规范
 
-本组织的仓库创建规范为：前缀-使用平台（如果有）-使用软件-仓库名  
-其中前缀为：
+本组织的仓库创建规范分为 `3` 种情况：
 
-- Hardware （对应硬件组）
-- Embedded （对应软件组）
-- Vision （对应视觉组）
-- Control （对应控制组）
+#### 1.1.1. `[2位数年份][比赛大写简写]_[机器人名(如有)]_[包名]` - 针对 某年、某比赛、某机器人 的一次性仓库
 
-使用平台只有软件组成员需要填写：
+样例：
 
-- 软件组为使用硬件平台的名称，如：STM32，ESP32，Arduino 之类
+- `26RC_R2_ws` - 2026年 Robocon 主赛 R2 机器人主 Workspace 仓库
+- `26RC_R2_kfs_tracker` - 2026年 Robocon 主赛 R2 机器人 KFS 视觉跟踪仓库，注意如果是 ROS Package 的话，`package.xml` 中的 `<name>` 标签需要与仓库中包名部分保持一致，包名单词间也使用下划线 `_` 分隔
+- `26RC_R1_arm_controller` - 2026年 Robocon 主赛 R1 机械臂控制器仓库，包名同理
+- `26RC_interfaces` - 2026年 Robocon 主赛通用接口仓库，如果是同场比赛跨机器人使用的仓库，命名可以省略机器人部分
+- `25RM_raw_rm_vision` - 2025年 RoboMaster 联盟赛 RM 视觉主仓库，包名同理
 
-使用软件所有都需要填写：
+#### 1.1.2. `aim-[4位学年名]-[包名]` - 针对 AIM 战队内部的 非赛用、单学年/长期 仓库
 
-- 控制组为使用 ROS 版本的名称，如：Noetic，Humble 等
-- 视觉组为使用 IDE 的名称，如：VSCode，CLion，PyCharm 等
-- 软件组为使用 IDE 的名称，如：Keil，PIO，CubeIDE 等
-- 硬件组为使用硬件的名称，如：KiCAD，Cadence，AltiumDesigner 等
+样例：
 
-样例命名为：  
+- `aim-2526-py-coursework` - 2025-2026 学年 AIM 战队 Python 国庆考核仓库，包名单词间分隔使用 dash `-`，注意与赛用仓库不同
+- `aim-2526-navigation-final-assessment` - 2025-2026 学年 AIM 导航组期末考核仓库，包名单词间分隔同理使用 dash `-`
+- `aim-rookie-courses` - Lectures designed for RM rookies & freshmen @ unnc-aim，主要用于存放新生课程资料，长期使用的仓库可以省略学年部分
 
-**Hardware-KiCAD-HyperCap**
-**Embedded-STM32-CubeIDE-Balance**
-**Control-Noetic-Infantry**
-**Vision-VSCode-PowerRune**
+#### 1.1.3. `BrandingRepo`/`package_name` - 对外开放/万能/可复用的 完整项目/轮子仓库/lib
+
+样例：
+
+- `RoboMark` - 单独包含 Branding 成分的仓库可以省略 `aim-xxxx` 前缀，直接使用仓库名即可
+- `Camera2Topic` - An ROS2 package that converts usb camera/realsense to topics
+- `ros2_hik_camera` - 海康相机 ROS2 驱动仓库
 
 ### 1.2 仓库内容规范
 
-所有仓库内 **不允许** 出现任何编译文件，请妥善使用.gitignore 文件来排除项目下所有潜在的编译文件
+- 所有仓库内 **不允许** 出现任何编译文件，请妥善使用 `.gitignore` 文件来排除项目下所有潜在的编译文件
+- 所有仓库主分支统一命名为 `main`，禁止使用 `master` 命名主分支
 
 ### 1.3 仓库进度管理
 
-所有仓库禁止直接向 main 分支直接提交修改，请创建分支并使用 Push & Pull request 来提交修改，分支命名规范需要符合以下要求：
+所有已经处于稳态的仓库禁止直接向 `main` 分支直接提交修改，请创建分支并使用 `Pull request` 来提交修改。
 
-- 新增功能无论有没有 bug 的按照功能的名字命名
+分支命名规范需要符合以下要求：
 
+- 分支名统一使用小写字母，单词间使用下划线 `_` 分隔
+- 如果是修复 `bug` 的分支，使用 `fix/[开启用户名]` 开头，，按照 `bug` 的名字命名，如 `fix/vision_tracking`，`fix/arm_control_error` 等
+- 新增功能按照功能的名字命名，如 `feature/vision_tracking`，`feature/arm_control` 等
 - 阶段性成果没有显著问题的按照版本号命名
-
-- 保证所有功能稳定可靠的才可 merge 到 main 分支
+- 保证所有功能稳定可靠的才可 merge 到 `main` 分支
 
 ### 1.4 Git Message Regulation
 
