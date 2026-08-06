@@ -1,0 +1,83 @@
+---
+name: aim-common-rules
+description: UNNC AIM team's repository and code standards. Covers repository naming (competition / aim- academic-year / reusable), branch and Conventional Commits rules, and Python (autopep8 / PEP 8) and C++ (clang-format / clang-tidy) formatting, with ready-to-copy canonical rule files. Use when creating or naming a repository, validating a ROS2 package.xml name, creating a branch, writing a git commit message, or setting up Python or C++ formatting (.clang-format / setup.cfg / .clang-tidy).
+---
+
+# UNNC AIM Team — Repository & Code Standards
+
+This skill is the **single entry point** for the team's standards. It consolidates and operationalizes the written rules under `.github/profile/`:
+
+- Repository naming / branch / commit rules ← `.github/profile/README.md`
+- C++ standard ← `.github/profile/standard.cpp.md`
+- Python standard ← `.github/profile/standard.py.md`
+
+The written docs remain the source of truth; this skill turns them into actionable checklists plus ready-to-copy rule files (`assets/`).
+
+> **Language rule for generated artifacts:** documentation prose is language-agnostic, but **all code, code comments, and commit messages must be in English.**
+
+## Where to look
+
+| Task | Read | Copy this file |
+|---|---|---|
+| Create / name a repo, validate a ROS2 package name | [references/repo-naming.md](references/repo-naming.md) | — |
+| Create a branch, write a commit message | [references/git-workflow.md](references/git-workflow.md) | — |
+| Format / configure **Python** | [references/python-formatting.md](references/python-formatting.md) | [assets/setup.cfg](assets/setup.cfg) |
+| Format / configure **C++** | [references/cpp-formatting.md](references/cpp-formatting.md) | [assets/.clang-format](assets/.clang-format) + [assets/.clang-tidy](assets/.clang-tidy) |
+
+## Naming quick reference (most-used — read this first)
+
+| Repo type | Pattern | Separator | Example |
+|---|---|---|---|
+| **Competition** (one year / one match / one robot) | `[2-digit year][match abbr]_[robot (optional)]_[package]` | underscore `_` | `26RC_R2_controller`, `26RC_interfaces` |
+| **Internal / academic-year** (non-competition) | `aim-[4-digit year]-[package]` (long-term libs may drop the year) | hyphen `-` | `aim-2526-py-coursework`, `aim-rookie-courses` |
+| **External / reusable / lib** | `BrandingRepo` or `package_name` | free | `RoboMark`, `ros2_hik_camera` |
+
+- Year/match tokens: `26RC` = 2026 Robocon; `25RM` = 2025 RoboMaster; `2526` = academic year 2025-2026 (only in `aim-*`).
+- **ROS2 package-name consistency:** if the repo is a single ROS package, the `<name>` in `package.xml` must match the repo's "package" segment; prefixes like `ros2_` are usually **dropped** in `<name>` (e.g. `ros2_hik_camera` → `<name>hik_camera</name>`).
+- Default branch is always `main` (**never** `master`); competition / stable repos must not push directly to `main` — use a Pull Request.
+
+> Full rules, decision tree, and known inconsistencies: [references/repo-naming.md](references/repo-naming.md).
+
+## Commit message quick reference (Conventional Commits)
+
+```
+<type>(<scope>): <subject>
+<blank line>
+<body>           # optional, wrap at <=72 chars
+<blank line>
+<footer>         # optional: BREAKING CHANGE: ... / Closes #123
+```
+
+`type` ∈ `feat | fix | docs | style | refactor | test | chore | perf | ci | build`; `subject` ≤ 50 chars, imperative mood, lowercase first letter, no trailing punctuation. Details: [references/git-workflow.md](references/git-workflow.md).
+
+## How members adopt this skill
+
+This skill lives in the team's org repo `unnc-aim/.github`. Since Claude Code loads skills **per project** (from the current repo's `.claude/skills/`), pick one to make it active in your project:
+
+1. **Personal, all projects (recommended for individuals)** — copy the whole skill directory into your personal config:
+   ```bash
+   cp -R .github/.claude/skills/aim-common-rules ~/.claude/skills/
+   ```
+   It then triggers in **every** project you open with Claude Code.
+
+2. **Team, per repo (recommended for competition / collaborative repos)** — copy it into your project repo and commit, so the whole team gets it on clone:
+   ```bash
+   cp -R <path-to-.github>/.claude/skills/aim-common-rules <your-repo>/.claude/skills/
+   git add .claude && git commit -m "chore: add aim-common-rules skill"
+   ```
+
+**Whether or not you use AI**, copy the canonical formatting rule files into **your repo root** and commit them, so everyone's editors / CI agree:
+
+| Language | Copy as | Source |
+|---|---|---|
+| C++ | `.clang-format` and `.clang-tidy` | [assets/.clang-format](assets/.clang-format), [assets/.clang-tidy](assets/.clang-tidy) |
+| Python | the `[flake8]` / `[autopep8]` sections of `setup.cfg` (merge in — do not overwrite ROS `[develop]`/`[install]`) | [assets/setup.cfg](assets/setup.cfg) |
+
+> Members not using AI: just read `references/*.md` and copy `assets/` — no Claude Code required.
+
+## Key gotchas
+
+- **clang-format only does layout, not naming.** C++ naming rules (functions `snake_case` / variables `camelBack` / classes `PascalCase` / macros & constants `UPPER_CASE` / structs `_t`) are enforced by human review or the provided `.clang-tidy`. See [references/cpp-formatting.md](references/cpp-formatting.md).
+- The vendored `ros2_hik_camera/.clang-tidy` uses `lower_case` variables, which **conflicts** with the written `standard.cpp.md` (`camelBack`). New repos follow the written standard; the team should reconcile. Details in cpp-formatting.md.
+- Python line length is **79** (matches the `autopep8` default used in `aim-py-2526-courseworks` CI). Changing it to 99/100 would break that repo's CI.
+- `standard.cpp.md` examples show 4-space indent, but the team's actual `.clang-format` (Google base) uses **2 spaces** — the `.clang-format` wins.
