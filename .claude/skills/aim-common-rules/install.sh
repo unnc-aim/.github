@@ -2,16 +2,15 @@
 #
 # aim-common-rules — interactive installer
 #
-# Installs the UNNC AIM team standards skill (or, for non-Claude-Code members,
-# just the formatting rules) to a destination of your choice.
+# Installs the UNNC AIM team standards skill to a destination of your choice.
 #
 # Interactive by default when run in a terminal. Non-interactive (defaults to a
 # global Claude Code install) when piped, e.g.:
 #   curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.claude/skills/aim-common-rules/install.sh | bash
 #
 # Non-interactive overrides (for CI / scripting):
-#   AIM_INSTALL_CHOICE=1|2|3|4|5 bash install.sh   # pick a menu option
-#   AIM_INSTALL_DEST=/any/path     bash install.sh   # equivalent to option 5
+#   AIM_INSTALL_CHOICE=1|2|3|4 bash install.sh   # pick a menu option
+#   AIM_INSTALL_DEST=/any/path   bash install.sh  # equivalent to option 4
 #
 # Re-running this installer updates to the latest version.
 #
@@ -43,7 +42,7 @@ if [ ! -f "$SRC/SKILL.md" ]; then
 fi
 
 # --- interactive destination menu ---
-# All user-facing text goes to stderr; only the chosen number (1-5) is echoed to
+# All user-facing text goes to stderr; only the chosen number (1-4) is echoed to
 # stdout so command substitution captures just the choice.
 choose() {
   cat >&2 <<'EOF'
@@ -53,28 +52,26 @@ Where do you want to install aim-common-rules?
   1) ~/.claude/skills/         Global — Claude Code (all your projects)        [recommended]
   2) ./.claude/skills/         This project — Claude Code (commit it for the team)
   3) ./.agents/                Generic agent dir (Cursor / Cline / custom tools)
-  4) Repo root (rules only)    Copy .clang-format / .clang-tidy / setup.cfg to ./
-                              (best if you do NOT use Claude Code)
-  5) Custom path               Install the full skill to a directory you choose
+  4) Custom path               Install the full skill to a directory you choose
 
 EOF
   local choice=""
   while true; do
-    printf 'Choice [1-5, default 1]: ' >&2
+    printf 'Choice [1-4, default 1]: ' >&2
     if ! read -r choice < /dev/tty 2>/dev/null; then
       choice="1"
     fi
     choice="${choice:-1}"
     case "$choice" in
-      1|2|3|4|5) echo "$choice"; return 0 ;;
-      *) echo "Please enter a number 1-5." >&2 ;;
+      1|2|3|4) echo "$choice"; return 0 ;;
+      *) echo "Please enter a number 1-4." >&2 ;;
     esac
   done
 }
 
 # --- resolve the chosen action ---
 if [ -n "${AIM_INSTALL_DEST:-}" ]; then
-  CHOICE="5"
+  CHOICE="4"
 elif [ -n "${AIM_INSTALL_CHOICE:-}" ]; then
   CHOICE="$AIM_INSTALL_CHOICE"
 elif [ -t 0 ] && [ -t 1 ]; then
@@ -84,29 +81,13 @@ else
   echo "Non-interactive mode: defaulting to option 1 (global ~/.claude/skills)." >&2
 fi
 
-# --- actions ---
+# --- copy the whole skill folder to a destination directory ---
 copy_full_skill() {   # $1 = destination directory
   local d="$1"
   mkdir -p "$d"
   rm -rf "$d/$SKILL"
   cp -R "$SRC" "$d/$SKILL"
   echo "Installed '$SKILL' -> $d/$SKILL"
-}
-
-copy_rules_only() {
-  local assets="$SRC/assets"
-  local f
-  for f in .clang-format .clang-tidy setup.cfg; do
-    [ -f "$assets/$f" ] || continue
-    if [ -e "./$f" ]; then
-      # Never clobber an existing file (e.g. a ROS setup.cfg) — write alongside.
-      cp "$assets/$f" "./$f.aim-common-rules"
-      echo "  ./$f already exists — wrote rules to ./$f.aim-common-rules (merge manually)."
-    else
-      cp "$assets/$f" "./$f"
-      echo "  wrote ./$f"
-    fi
-  done
 }
 
 case "$CHOICE" in
@@ -124,12 +105,6 @@ case "$CHOICE" in
     echo "Installed under ./.agents/. Point your tool at SKILL.md / assets as needed."
     ;;
   4)
-    echo "Copying formatting rules to repo root..."
-    copy_rules_only
-    echo "Done. Your editor / clang-format / autopep8 / CI will read these automatically."
-    echo "(Non-Claude-Code setup complete.)"
-    ;;
-  5)
     DEST="${AIM_INSTALL_DEST:-}"
     if [ -z "$DEST" ]; then
       if [ -t 0 ] && [ -t 1 ]; then
@@ -142,14 +117,14 @@ case "$CHOICE" in
           echo "Please enter a path." >&2
         done
       else
-        echo "Error: choice 5 requires AIM_INSTALL_DEST=<path> in non-interactive mode." >&2
+        echo "Error: choice 4 requires AIM_INSTALL_DEST=<path> in non-interactive mode." >&2
         exit 1
       fi
     fi
     copy_full_skill "$DEST"
     ;;
   *)
-    echo "Error: invalid choice '$CHOICE' (expected 1-5). Use AIM_INSTALL_CHOICE=1..5." >&2
+    echo "Error: invalid choice '$CHOICE' (expected 1-4). Use AIM_INSTALL_CHOICE=1..4." >&2
     exit 1
     ;;
 esac
