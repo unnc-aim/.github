@@ -6,11 +6,7 @@
 #
 # Interactive by default when run in a terminal. Non-interactive (defaults to a
 # global Claude Code install) when piped, e.g.:
-#   curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.claude/skills/aim-common-rules/install.sh | bash
-#
-# Non-interactive overrides (for CI / scripting):
-#   AIM_INSTALL_CHOICE=1|2|3|4 bash install.sh   # pick a menu option
-#   AIM_INSTALL_DEST=/any/path   bash install.sh  # equivalent to option 4
+#   curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.agent/skills/aim-common-rules/install.sh | bash
 #
 # Re-running this installer updates to the latest version.
 #
@@ -33,7 +29,7 @@ else
   TMP="$(mktemp -d)"
   trap 'rm -rf "$TMP"' EXIT
   git clone --quiet --depth 1 --branch "$BRANCH" "$REPO" "$TMP/repo"
-  SRC="$TMP/repo/.claude/skills/$SKILL"
+  SRC="$TMP/repo/.agent/skills/$SKILL"
 fi
 
 if [ ! -f "$SRC/SKILL.md" ]; then
@@ -51,7 +47,7 @@ Where do you want to install aim-common-rules?
 
   1) ~/.claude/skills/         Global — Claude Code (all your projects)        [recommended]
   2) ./.claude/skills/         This project — Claude Code (commit it for the team)
-  3) ./.agents/                Generic agent dir (Cursor / Cline / custom tools)
+  3) ./.agent/skills/          Generic agent dir (Cursor / Cline / custom tools)
   4) Custom path               Install the full skill to a directory you choose
 
 EOF
@@ -69,16 +65,13 @@ EOF
   done
 }
 
-# --- resolve the chosen action ---
-if [ -n "${AIM_INSTALL_DEST:-}" ]; then
-  CHOICE="4"
-elif [ -n "${AIM_INSTALL_CHOICE:-}" ]; then
-  CHOICE="$AIM_INSTALL_CHOICE"
-elif [ -t 0 ] && [ -t 1 ]; then
+# --- resolve the chosen action (interactive menu only; no env vars) ---
+if [ -t 0 ] && [ -t 1 ]; then
   CHOICE="$(choose)"
 else
   CHOICE="1"   # non-interactive default (curl | bash, CI)
   echo "Non-interactive mode: defaulting to option 1 (global ~/.claude/skills)." >&2
+  echo "Run in a terminal to choose a different destination." >&2
 fi
 
 # --- copy the whole skill folder to a destination directory ---
@@ -92,8 +85,7 @@ copy_full_skill() {   # $1 = destination directory
 
 case "$CHOICE" in
   1)
-    DEST="${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}"
-    copy_full_skill "$DEST"
+    copy_full_skill "$HOME/.claude/skills"
     echo "Available in all your Claude Code projects (auto-triggered)."
     ;;
   2)
@@ -101,30 +93,28 @@ case "$CHOICE" in
     echo "Available in this project only. Commit it so teammates get it too."
     ;;
   3)
-    copy_full_skill "./.agents"
-    echo "Installed under ./.agents/. Point your tool at SKILL.md / assets as needed."
+    copy_full_skill "./.agent/skills"
+    echo "Installed under ./.agent/skills/. Point your tool at SKILL.md / assets as needed."
     ;;
   4)
-    DEST="${AIM_INSTALL_DEST:-}"
-    if [ -z "$DEST" ]; then
-      if [ -t 0 ] && [ -t 1 ]; then
-        while true; do
-          printf 'Enter destination directory: ' >&2
-          if ! read -r DEST < /dev/tty 2>/dev/null; then
-            echo "Error: no input." >&2; exit 1
-          fi
-          [ -n "$DEST" ] && break
-          echo "Please enter a path." >&2
-        done
-      else
-        echo "Error: choice 4 requires AIM_INSTALL_DEST=<path> in non-interactive mode." >&2
-        exit 1
-      fi
+    if [ -t 0 ] && [ -t 1 ]; then
+      DEST=""
+      while true; do
+        printf 'Enter destination directory: ' >&2
+        if ! read -r DEST < /dev/tty 2>/dev/null; then
+          echo "Error: no input." >&2; exit 1
+        fi
+        [ -n "$DEST" ] && break
+        echo "Please enter a path." >&2
+      done
+    else
+      echo "Error: custom path requires an interactive terminal." >&2
+      exit 1
     fi
     copy_full_skill "$DEST"
     ;;
   *)
-    echo "Error: invalid choice '$CHOICE' (expected 1-4). Use AIM_INSTALL_CHOICE=1..4." >&2
+    echo "Error: invalid choice '$CHOICE' (expected 1-4). Run interactively to choose." >&2
     exit 1
     ;;
 esac

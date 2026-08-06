@@ -56,13 +56,13 @@ This skill lives in the team's org repo `unnc-aim/.github`. Since Claude Code lo
 
 1. **Personal, all projects (recommended for individuals)** — copy the whole skill directory into your personal config:
    ```bash
-   cp -R .github/.claude/skills/aim-common-rules ~/.claude/skills/
+   cp -R .github/.agent/skills/aim-common-rules ~/.claude/skills/
    ```
    It then triggers in **every** project you open with Claude Code.
 
 2. **Team, per repo (recommended for competition / collaborative repos)** — copy it into your project repo and commit, so the whole team gets it on clone:
    ```bash
-   cp -R <path-to-.github>/.claude/skills/aim-common-rules <your-repo>/.claude/skills/
+   cp -R <path-to-.github>/.agent/skills/aim-common-rules <your-repo>/.claude/skills/
    git add .claude && git commit -m "chore: add aim-common-rules skill"
    ```
 
