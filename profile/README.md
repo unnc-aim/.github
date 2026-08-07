@@ -61,11 +61,14 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 分支命名规范需要符合以下要求：
 
-- 分支名统一使用小写字母，单词间使用下划线 `_` 分隔
-- 如果是修复 `bug` 的分支，使用 `fix/[开启用户名]` 开头，，按照 `bug` 的名字命名，如 `fix/vision_tracking`，`fix/arm_control_error` 等
-- 新增功能按照功能的名字命名，如 `feature/vision_tracking`，`feature/arm_control` 等
-- 阶段性成果没有显著问题的按照版本号命名
-- 保证所有功能稳定可靠的才可 merge 到 `main` 分支
+- 分支名统一使用小写字母，单词间使用 dash `-` 分隔
+- 如果是修复 `bug` 的分支，使用 `fix/[小写负责人用户名]-` 开头，，按照 `bug` 的名字命名，如 `fix/hnrobert-target-tracking`；如果有多人参与可以省略用户名，如 `fix/arm-control-error`
+- 新增功能按照功能的名字命名，使用 `feature/[小写负责人用户名]-` 开头，如 `feature/gentle-lijie-lidar-mapping`；如果有多人参与可以省略用户名，如 `feature/arm-control` 等
+- 其他的参考 commit message 规范，也按照修改部分的名字命名，如 `refactor/gimbal-control`、`docs/chassis-control` 等
+
+**保证所有功能稳定可靠的才可 merge 到 `main` 分支**
+
+阶段性成果标记使用 `tag`, tag 命名规范为三位数字，第一位为大版本号，第二位为小版本号，第三位为修订号，如 `v1.0.0`、`v1.0.1`、`v1.1.0` 等。
 
 ### 1.4 Git Message Regulation
 
