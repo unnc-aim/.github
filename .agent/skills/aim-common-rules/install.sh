@@ -45,7 +45,7 @@ choose() {
 
 Where do you want to install aim-common-rules?
 
-  1) ~/.claude/skills/         Global — Claude Code (all your projects)        [recommended]
+  1) ~/.claude/skills/         Global — Claude Code (all your projects)
   2) ./.claude/skills/         This project — Claude Code (commit it for the team)
   3) .agent/skills/            Generic agent dir (global ~/.agent or project ./.agent; Cursor / Cline / custom)
   4) Custom path               Install the full skill to a directory you choose

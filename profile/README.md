@@ -148,14 +148,14 @@ curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.agent/skills
 
 | 选项 | 安装位置 | 适用场景 |
 | --- | --- | --- |
-| 1 | `~/.claude/skills/`（全局，**推荐**） | Claude Code 用户，所有项目默认可用 |
+| 1 | `~/.claude/skills/`（全局） | Claude Code 用户，所有项目默认可用 |
 | 2 | `./.claude/skills/`（本项目） | Claude Code 用户，随仓库提交共享给全队 |
 | 3 | `~/.agent/skills/`（全局）或 `./.agent/skills/`（本项目） | Cursor / Cline 等其他 agent 工具或自定义 |
 | 4 | 自定义路径 | 你指定任意目录 |
 
 > 本地也可直接 `bash .agent/skills/aim-common-rules/install.sh`。
 
-### 2.2 默认使用（Claude Code）
+### 2.2 在 Claude Code 中使用
 
 全局安装后**无需任何额外配置**：skill 会根据其描述在相关场景**自动触发**；也可在对话中手动调用 `/aim-common-rules`。
 
@@ -163,8 +163,8 @@ curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.agent/skills
 
 规范更新后，**重新执行 2.1 的同一行命令**即可覆盖更新。
 
-### 2.4 不使用 Claude Code 的成员
+### 2.4 在 Cursor / Cline 等其他工具中使用
 
-用上面的脚本把 skill 安装到任意位置（如选项 1 全局、选项 3 `~/.agent/skills/` 全局或 `./.agent/skills/` 本项目、或选项 4 自定义路径）即可。格式化规则文件位于 `<安装目录>/aim-common-rules/assets/`（`.clang-format` / `.clang-tidy` / `setup.cfg`），把它们拷贝到你的仓库根目录，编辑器 / `clang-format` / `autopep8` / CI 就会自动读取；若仓库已有同名文件（如 ROS 的 `setup.cfg`），请手动合并而非覆盖。
+用上面的脚本把 skill 安装到对应工具读取的位置（如选项 3 `~/.agent/skills/` 全局或 `./.agent/skills/` 本项目、或选项 4 自定义路径）即可。格式化规则文件位于 `<安装目录>/aim-common-rules/assets/`（`.clang-format` / `.clang-tidy` / `setup.cfg`），把它们拷贝到你的仓库根目录，编辑器 / `clang-format` / `autopep8` / CI 就会自动读取；若仓库已有同名文件（如 ROS 的 `setup.cfg`），请手动合并而非覆盖。
 
 规范全文也可直接在 GitHub 阅读：[`.agent/skills/aim-common-rules/references`](https://github.com/unnc-aim/.github/tree/main/.agent/skills/aim-common-rules/references)（仓库命名 / Git 流程 / Python / C++ 格式化）。
