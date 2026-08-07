@@ -47,7 +47,7 @@ Where do you want to install aim-common-rules?
 
   1) ~/.claude/skills/         Global — Claude Code (all your projects)        [recommended]
   2) ./.claude/skills/         This project — Claude Code (commit it for the team)
-  3) ./.agent/skills/          Generic agent dir (Cursor / Cline / custom tools)
+  3) .agent/skills/            Generic agent dir (global ~/.agent or project ./.agent; Cursor / Cline / custom)
   4) Custom path               Install the full skill to a directory you choose
 
 EOF
@@ -93,8 +93,36 @@ case "$CHOICE" in
     echo "Available in this project only. Commit it so teammates get it too."
     ;;
   3)
-    copy_full_skill "./.agent/skills"
-    echo "Installed under ./.agent/skills/. Point your tool at SKILL.md / assets as needed."
+    # Generic agent dir: global (~/.agent/skills) or project (./.agent/skills).
+    AGENT_SCOPE=""
+    if [ -t 0 ] && [ -t 1 ]; then
+      cat >&2 <<'EOF'
+
+Install the agent skill dir where?
+  g) ~/.agent/skills/   Global (all your projects)
+  p) ./.agent/skills/   This project
+
+EOF
+      while true; do
+        printf 'Choice [g/p, default g]: ' >&2
+        if ! read -r AGENT_SCOPE < /dev/tty 2>/dev/null; then
+          AGENT_SCOPE="g"
+        fi
+        AGENT_SCOPE="${AGENT_SCOPE:-g}"
+        case "$AGENT_SCOPE" in
+          g|G|p|P) break ;;
+          *) echo "Please enter g or p." >&2 ;;
+        esac
+      done
+    else
+      AGENT_SCOPE="g"   # non-interactive fallback (option 3 is normally interactive-only)
+    fi
+    case "$AGENT_SCOPE" in
+      g|G) AGENT_DEST="$HOME/.agent/skills" ;;
+      *)   AGENT_DEST="./.agent/skills" ;;
+    esac
+    copy_full_skill "$AGENT_DEST"
+    echo "Installed under $AGENT_DEST. Point your tool at SKILL.md / assets as needed."
     ;;
   4)
     if [ -t 0 ] && [ -t 1 ]; then
