@@ -24,7 +24,7 @@ The written docs remain the source of truth; this skill turns them into actionab
 | Create a branch, write a commit message | [references/git-workflow.md](references/git-workflow.md) | — |
 | Format / configure **Python** | [references/python-formatting.md](references/python-formatting.md) | [assets/setup.cfg](assets/setup.cfg) |
 | Format / configure **C++** | [references/cpp-formatting.md](references/cpp-formatting.md) | [assets/.clang-format](assets/.clang-format) + [assets/.clang-tidy](assets/.clang-tidy) |
-| Set up **VS Code** (extensions, Pylance, format-on-save) | [references/python-formatting.md](references/python-formatting.md) §3, §5, §6 + `profile/README.md` §1.6 | — |
+| Set up **VS Code** (extensions, Pylance, format-on-save) | [references/python-formatting.md](references/python-formatting.md) §3, §5, §6 + `profile/README.md` §1.6 | [assets/.vscode/extensions.json](assets/.vscode/extensions.json) |
 
 ## Naming quick reference (most-used — read this first)
 
@@ -76,6 +76,15 @@ This skill lives in the team's org repo `unnc-aim/.github`. Since Claude Code lo
 | Python | the `[flake8]` / `[autopep8]` / `[isort]` sections of `setup.cfg` (merge in — do not overwrite ROS `[develop]`/`[install]`) | [assets/setup.cfg](assets/setup.cfg) |
 
 > Members not using AI: just read `references/*.md` and copy `assets/` — no Claude Code required.
+
+## Repo setup — proactively offer `.vscode/extensions.json`
+
+When you help create or set up a repo (a new project, or onboarding an existing one), **proactively offer** to add `.vscode/extensions.json` so VS Code recommends the team's standard extensions to anyone who opens the repo. Copy the ready-made template: [assets/.vscode/extensions.json](assets/.vscode/extensions.json).
+
+- **Ask first.** Propose it (e.g. *"Want me to add `.vscode/extensions.json` with the team's recommended extensions?"*) and write the file only on confirmation — never silently create files in the user's repo.
+- **Merge, don't overwrite.** If `.vscode/extensions.json` already exists, add only the missing IDs to its `recommendations` array.
+- **Or just install locally.** If the user prefers not to commit the file, offer to run `code --install-extension <id>` for each extension (after confirming), or point them to the list in `profile/README.md` §1.6.
+- **Optional companion:** also commit `.vscode/settings.json` (format-on-save + Pylance — see [references/python-formatting.md](references/python-formatting.md) §3 / §6) so the whole team shares the same editor behavior.
 
 ## Key gotchas
 

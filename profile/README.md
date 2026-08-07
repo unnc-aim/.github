@@ -144,7 +144,7 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 - `streetsidesoftware.code-spell-checker` # 拼写检查
 - `editorconfig.editorconfig` # 统一缩进 / 换行风格
 
-> 在仓库根目录放一份 `.vscode/extensions.json`（`recommendations` 字段填入上述 ID），VS Code 打开该仓库时会自动提示队友安装。
+> 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](../.agent/skills/aim-common-rules/assets/.vscode/extensions.json)——放到仓库根目录 `.vscode/extensions.json`，VS Code 打开该仓库时会自动提示队友安装上述插件。
 
 ## **2. Agentic Skill (aim-common-rules)**
 
