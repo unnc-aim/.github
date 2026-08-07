@@ -34,6 +34,22 @@
 - `Camera2Topic` - An ROS2 package that converts usb camera/realsense to topics
 - `ros2_hik_camera` - 海康相机 ROS2 驱动仓库
 
+#### 1.1.4. 赛用 Workspace 内组织子模块时去掉比赛前缀
+
+比赛 **Workspace** 仓库（后缀 `_ws`，如 `26RC_R2_ws`）会把多个比赛仓库作为 **git submodule** 放在 `src/` 下。当被添加的仓库带比赛前缀（`26RC_` / `26RC_R2_` 等）时，子模块目录名要 **去掉前缀**——前缀在工作区名中已体现，无需重复：
+
+```bash
+# 在 26RC_R2_ws/ 内
+git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm_controller
+# 而不是 src/26RC_R2_arm_controller
+```
+
+- 去掉前缀后的目录名必须与 ROS 包 `package.xml` 中的 `<name>` 一致；比赛前缀只出现在 GitHub 仓库名里。
+- 无比赛前缀的可复用包（如 `Camera2Topic`、`ros2_hik_camera`）保持原名直接放入 `src/`。
+- 完整规则、示例表与已知反例见 skill：[`.agent/skills/aim-common-rules/references/workspace-organization.md`](../.agent/skills/aim-common-rules/references/workspace-organization.md)。
+
+> 仓库命名完整规范（三种模式、决策树、大小写 / 分隔符对照、已知反例）见 skill：[`.agent/skills/aim-common-rules/references/repo-naming.md`](../.agent/skills/aim-common-rules/references/repo-naming.md)。
+
 ### 1.2 仓库内容规范
 
 - 所有仓库内 **不允许** 出现任何编译文件，请妥善使用 `.gitignore` 文件来排除项目下所有潜在的编译文件
@@ -107,9 +123,48 @@
       - BREAKING CHANGE：如果变更会导致不兼容，说明影响范围和解决方案。
       - Issues：引用相关问题或任务编号，例如 Closes #123 或 Refs #456。
 
+> 分支命名与 commit message 完整规范（字段说明、`type` 取值、PR 流程）见 skill：[`.agent/skills/aim-common-rules/references/git-workflow.md`](../.agent/skills/aim-common-rules/references/git-workflow.md)。
+
 ### 1.5 代码规范
 
 ***请务必在提交代码前对代码进行格式化，具体规范请参考以下文档***
 
-- [C++](standard.cpp.md)
-- [Python](standard.py.md)
+- [C++](standard.cpp.md) — 完整命名规则、`.clang-format` / `.clang-tidy` 模板与已知反例见 skill：[`.agent/skills/aim-common-rules/references/cpp-formatting.md`](../.agent/skills/aim-common-rules/references/cpp-formatting.md)
+- [Python](standard.py.md) — autopep8 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md)
+
+## **2. Agentic Skill (aim-common-rules)**
+
+上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于本仓库 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ 代码**等场景自动调用本规范。
+
+### 2.1 安装（交互式，可选目标位置）
+
+在任意目录执行：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/unnc-aim/.github/main/.agent/skills/aim-common-rules/install.sh | bash
+```
+
+在终端里运行会弹出交互菜单选择安装位置（`curl | bash` 或 CI 等非交互环境默认走选项 1；在终端本地运行可选择其他位置）：
+
+| 选项 | 安装位置 | 适用场景 |
+| --- | --- | --- |
+| 1 | `~/.claude/skills/`（全局） | Claude Code 用户，所有项目默认可用 |
+| 2 | `./.claude/skills/`（本项目） | Claude Code 用户，随仓库提交共享给全队 |
+| 3 | `~/.agent/skills/`（全局）或 `./.agent/skills/`（本项目） | Cursor / Cline 等其他 agent 工具或自定义 |
+| 4 | 自定义路径 | 你指定任意目录 |
+
+> 本地也可直接 `bash .agent/skills/aim-common-rules/install.sh`。
+
+### 2.2 在 Claude Code 中使用
+
+全局安装后**无需任何额外配置**：skill 会根据其描述在相关场景**自动触发**；也可在对话中手动调用 `/aim-common-rules`。
+
+### 2.3 更新
+
+规范更新后，**重新执行 2.1 的同一行命令**即可覆盖更新。
+
+### 2.4 在 Cursor / Cline 等其他工具中使用
+
+用上面的脚本把 skill 安装到对应工具读取的位置（如选项 3 `~/.agent/skills/` 全局或 `./.agent/skills/` 本项目、或选项 4 自定义路径）即可。格式化规则文件位于 `<安装目录>/aim-common-rules/assets/`（`.clang-format` / `.clang-tidy` / `setup.cfg`），把它们拷贝到你的仓库根目录，编辑器 / `clang-format` / `autopep8` / CI 就会自动读取；若仓库已有同名文件（如 ROS 的 `setup.cfg`），请手动合并而非覆盖。
+
+规范全文也可直接在 GitHub 阅读：[`.agent/skills/aim-common-rules/references`](https://github.com/unnc-aim/.github/tree/main/.agent/skills/aim-common-rules/references)（仓库命名 / Git 流程 / Python / C++ 格式化）。
