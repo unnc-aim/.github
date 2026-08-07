@@ -48,7 +48,7 @@ Copy the `[flake8]` / `[autopep8]` sections from [assets/setup.cfg](../assets/se
 
 ## 3. CI (existing reference)
 
-`aim-py-2526-courseworks/.github/workflows/ci.yml` already uses autopep8 to gate unformatted code:
+`unnc-aim/aim-py-2526-courseworks/.github/workflows/ci.yml` already uses autopep8 to gate unformatted code:
 
 ```yaml
 - run: pip install autopep8 pytest
@@ -68,9 +68,72 @@ New repos can copy this pattern: treat any non-empty `autopep8 --diff` output as
 | Constant | `UPPER_SNAKE_CASE` | `MAX_FPS`, `DEFAULT_PORT` |
 | Private | leading `_` | `_internal_helper` |
 
-## 5. Import sorting (optional)
+## 5. Import sorting with isort
 
-`aim-rookie-courses`'s Python setup doc recommends **isort**. The team does not enforce it in CI; to enable it, add this to `setup.cfg`:
+autopep8 does **not** sort imports. The team standard is to sort them with **isort**. Copy the `[isort]` section from [assets/setup.cfg](../assets/setup.cfg) (it sits alongside `[flake8]` / `[autopep8]`).
+
+### 5.1 The import order (the spec)
+
+Group imports in this order, with a **blank line between groups**; within a group, sort alphabetically and put `import x` before `from x import y`:
+
+1. **stdlib** — `os`, `sys`, `math`, `collections`, …
+2. **third-party** — `numpy`, `cv2`, `rclpy`, `torch`, …
+3. **first-party / local** — the current repo's own packages and modules
+
+```python
+# stdlib
+import os
+import sys
+from collections import defaultdict
+
+# third-party
+import cv2
+import numpy as np
+import rclpy
+from rclpy.node import Node
+
+# first-party / local
+from hik_camera.camera import CameraNode
+from vision_utils import process_frame
+```
+
+> In ROS2 (`rclpy`-based) repos, `rclpy` and other pip / ROS deps are **third-party**; only the current repo's own packages are first-party.
+
+### 5.2 Install & run
+
+```bash
+# install
+pip install isort
+
+# sort in place, recursively (auto-reads setup.cfg [isort])
+isort .
+
+# preview only, do not write
+isort --diff .
+```
+
+### 5.3 Editor integration
+
+- **VS Code**: the Python extension sorts imports via isort out of the box. Add to `.vscode/settings.json`:
+
+  ```jsonc
+  {
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.autopep8",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
+    "isort.args": ["--profile", "black", "--line-length", "79"]
+  }
+  ```
+
+  Trigger it manually via the command palette → **Organize Imports** (`Shift+Alt+O`).
+
+- **PyCharm**: its built-in *Optimize Imports* (`Ctrl+Alt+O`) removes unused imports but does not match isort's grouping. For full parity, run `isort .` from the terminal before committing.
+
+### 5.4 Config
 
 ```ini
 [isort]
@@ -78,4 +141,43 @@ profile = black
 line_length = 79
 ```
 
-(`profile = black` is just an isort preset name, unrelated to whether you use black; it gives a common, compatible import grouping.)
+`profile = black` is only an isort multi-line preset name (parenthesized, trailing comma) — the team does **not** use black. `line_length = 79` matches autopep8 / flake8; do not change it.
+
+### 5.5 Run order with autopep8
+
+Run **isort first, then autopep8** — isort sets the import structure, autopep8 polishes the rest:
+
+```bash
+isort . && autopep8 --in-place --recursive --max-line-length 79 .
+```
+
+### 5.6 CI
+
+The existing `aim-py-2526-courseworks` CI only runs autopep8. To also gate import order, add:
+
+```yaml
+- run: pip install isort
+- run: isort --check-only --diff .
+```
+
+`isort --check-only` exits non-zero when any file would change — treat that as a failure.
+
+## 6. Type checking & IntelliSense (Pylance)
+
+**Pylance** (`ms-python.vscode-pylance`) is the VS Code Python language server — IntelliSense, go-to-definition, and **type checking**. It ships with the Python extension (`ms-python.python`) and auto-installs; install it explicitly only if IntelliSense is missing.
+
+Pylance is the analyzer; autopep8 formats and isort sorts imports — the three compose without conflict.
+
+Recommended settings (`.vscode/settings.json`):
+
+```jsonc
+{
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.inlayHints.variableTypes": true
+}
+```
+
+- `typeCheckingMode`: `off` / `basic` / `strict`. Use **`basic`** for most repos (catches common type errors with little noise); reserve `strict` for libraries where rigor matters. Tighten a single file with a `# pyright: strict` comment if needed.
+- Pylance also flags undefined names, unused imports (overlaps with isort), and signature mismatches — fix what it reports before committing.
