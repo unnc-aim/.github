@@ -125,7 +125,7 @@ isort --diff .
         "source.organizeImports": "explicit"
       }
     },
-    "isort.args": ["--profile", "black", "--line-length", "79"]
+    "isort.args": ["--line-length", "79"]
   }
   ```
 
@@ -137,11 +137,12 @@ isort --diff .
 
 ```ini
 [isort]
-profile = black
 line_length = 79
 ```
 
-`profile = black` is only an isort multi-line preset name (parenthesized, trailing comma) — the team does **not** use black. `line_length = 79` matches autopep8 / flake8; do not change it.
+Only `line_length = 79` is pinned (matching autopep8 / flake8); import grouping and multi-line wrapping use isort's defaults. (isort's default line length is already 79 — the line just makes the parity explicit.)
+
+> Want one-import-per-line wrapping with a trailing comma (less diff churn on long imports)? That is isort's `black` profile; the team does not use black, so it is opt-in — set `multi_line_output = 3`, `include_trailing_comma = true`, `use_parentheses = true` if you want it.
 
 ### 5.5 Run order with autopep8
 

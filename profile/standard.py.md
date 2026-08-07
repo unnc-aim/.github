@@ -22,7 +22,7 @@
 2. 第三方库（`numpy`、`cv2`、`rclpy` …）
 3. 本仓库自身模块（first-party / local）
 
-组内按字母序，`import x` 排在 `from x import y` 之前。配置见 `setup.cfg` 的 `[isort]` 段（`profile = black`、`line_length = 79`）；提交前先跑 `isort .`，再跑 autopep8。
+组内按字母序，`import x` 排在 `from x import y` 之前。配置见 `setup.cfg` 的 `[isort]` 段（`line_length = 79`，其余用 isort 默认）；提交前先跑 `isort .`，再跑 autopep8。
 
 > 完整配置、编辑器集成与 CI 用法见 skill：[`python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md) §5。
 
