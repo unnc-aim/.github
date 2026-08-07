@@ -141,10 +141,12 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 - `ms-python.autopep8` # Python 格式化
 - isort 排序已内置于 Python 扩展的「Organize Imports」，无需单独安装
 - `llvm-vs-code-extensions.vscode-clangd` # C++ 语言服务，自动读取 `.clang-format` / `.clang-tidy`
-- `streetsidesoftware.code-spell-checker` # 拼写检查
+- `streetsidesoftware.code-spell-checker` # 拼写检查（美式英语）
 - `editorconfig.editorconfig` # 统一缩进 / 换行风格
 
-> 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](../.agent/skills/aim-common-rules/assets/.vscode/extensions.json)——放到仓库根目录 `.vscode/extensions.json`，VS Code 打开该仓库时会自动提示队友安装上述插件。
+> **代码、注释、commit message 一律使用美式英语**（如 `color` / `behavior` / `optimize`，而非 *colour* / *behaviour* / *optimise*）。cSpell 报错的词先核对：若确属正确（战队 / 领域术语、缩写、专有名词，且为美式英语拼写），加入 `.vscode/settings.json` 的 `cSpell.words` 数组学习，不要直接忽略或放过真正的拼写错误。
+>
+> 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](../.agent/skills/aim-common-rules/assets/.vscode/extensions.json)（插件推荐）与 [`.agent/skills/aim-common-rules/assets/.vscode/settings.json`](../.agent/skills/aim-common-rules/assets/.vscode/settings.json)（含 `cSpell.words`、format-on-save、Pylance）——放到仓库根目录 `.vscode/` 即可。
 
 ## **2. Agentic Skill (aim-common-rules)**
 

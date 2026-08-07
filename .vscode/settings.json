@@ -7,6 +7,7 @@
         "analyzer",
         "Arduino",
         "autopep",
+        "behavior",
         "Clion",
         "colcon",
         "Constexpr",
