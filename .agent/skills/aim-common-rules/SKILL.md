@@ -13,7 +13,7 @@ This skill is the **single entry point** for the team's standards. It consolidat
 
 The written docs remain the source of truth; this skill turns them into actionable checklists plus ready-to-copy rule files (`assets/`).
 
-> **Language rule for generated artifacts:** documentation prose is language-agnostic, but **all code, code comments, and commit messages must be in English.**
+> **Language rule for generated artifacts:** documentation prose is language-agnostic, but **all code, code comments, and commit messages must be in American English** (e.g. `color`, `behavior`, `optimize` — not *colour*, *behaviour*, *optimise*).
 
 ## Where to look
 
@@ -24,6 +24,7 @@ The written docs remain the source of truth; this skill turns them into actionab
 | Create a branch, write a commit message | [references/git-workflow.md](references/git-workflow.md) | — |
 | Format / configure **Python** | [references/python-formatting.md](references/python-formatting.md) | [assets/setup.cfg](assets/setup.cfg) |
 | Format / configure **C++** | [references/cpp-formatting.md](references/cpp-formatting.md) | [assets/.clang-format](assets/.clang-format) + [assets/.clang-tidy](assets/.clang-tidy) |
+| Set up **VS Code** (extensions, Pylance, format-on-save, spelling) | [references/python-formatting.md](references/python-formatting.md) §3, §5, §6 + `profile/README.md` §1.6 | [assets/.vscode/extensions.json](assets/.vscode/extensions.json) + [assets/.vscode/settings.json](assets/.vscode/settings.json) |
 
 ## Naming quick reference (most-used — read this first)
 
@@ -72,14 +73,26 @@ This skill lives in the team's org repo `unnc-aim/.github`. Since Claude Code lo
 | Language | Copy as | Source |
 |---|---|---|
 | C++ | `.clang-format` and `.clang-tidy` | [assets/.clang-format](assets/.clang-format), [assets/.clang-tidy](assets/.clang-tidy) |
-| Python | the `[flake8]` / `[autopep8]` sections of `setup.cfg` (merge in — do not overwrite ROS `[develop]`/`[install]`) | [assets/setup.cfg](assets/setup.cfg) |
+| Python | the `[flake8]` / `[autopep8]` / `[isort]` sections of `setup.cfg` (merge in — do not overwrite ROS `[develop]`/`[install]`) | [assets/setup.cfg](assets/setup.cfg) |
 
 > Members not using AI: just read `references/*.md` and copy `assets/` — no Claude Code required.
+
+## Repo setup — proactively offer editor config
+
+When you help create or set up a repo (a new project, or onboarding an existing one), **proactively offer** to add the team's VS Code config under `.vscode/` so everyone who opens the repo gets the same extensions, formatting, and spelling baseline. Templates: [assets/.vscode/extensions.json](assets/.vscode/extensions.json) + [assets/.vscode/settings.json](assets/.vscode/settings.json).
+
+- **Ask first.** Propose it (e.g. *"Want me to add `.vscode/extensions.json` + `.vscode/settings.json` with the team's editor config?"*) and write files only on confirmation — never silently create files in the user's repo.
+- **Merge, don't overwrite.** If `.vscode/extensions.json` or `.vscode/settings.json` already exists, merge by hand (add missing extension IDs to `recommendations`; append missing settings / `cSpell.words`) instead of replacing.
+- **Or just install locally.** If the user prefers not to commit the files, offer to run `code --install-extension <id>` per extension (after confirming), or point them to the list in `profile/README.md` §1.6.
+- **Spelling (Code Spell Checker).** When `cSpell` flags a word, first check whether it is a real typo; if it is a correct term spelled in **American English** (team / domain jargon, acronym, proper noun), add it to the `cSpell.words` array in `.vscode/settings.json`. Do not disable the checker or leave genuine typos in place.
+
+`settings.json` also carries format-on-save + isort + Pylance (see [references/python-formatting.md](references/python-formatting.md) §3 / §5 / §6).
 
 ## Key gotchas
 
 - **clang-format only does layout, not naming.** C++ naming rules (functions `snake_case` / variables `camelBack` / classes `PascalCase` / macros & constants `UPPER_CASE` / structs `_t`) are enforced by human review or the provided `.clang-tidy`. See [references/cpp-formatting.md](references/cpp-formatting.md).
 - The vendored `ros2_hik_camera/.clang-tidy` uses `lower_case` variables, which **conflicts** with the written `standard.cpp.md` (`camelBack`). New repos follow the written standard; the team should reconcile. Details in cpp-formatting.md.
 - Python line length is **79** (matches the `autopep8` default used in `aim-py-2526-courseworks` CI). Changing it to 99/100 would break that repo's CI.
+- **autopep8 does not sort imports.** Sort them with **isort** (`line_length = 79`; see [references/python-formatting.md](references/python-formatting.md) §5), and run it **before** autopep8. The `aim-py-2526-courseworks` CI runs only autopep8, so isort is a recommended addition, not yet gated.
 - `standard.cpp.md` examples show 4-space indent, but the team's actual `.clang-format` (Google base) uses **2 spaces** — the `.clang-format` wins.
 - **Inside a competition workspace** (`*_ws`, e.g. `26RC_R2_ws`): add competition-prefixed repos as git submodules under `src/` with the prefix **stripped** (`26RC_R2_arm_controller` → `src/arm_controller`). The prefix is redundant — the workspace name already carries the year/match/robot. See [references/workspace-organization.md](references/workspace-organization.md).

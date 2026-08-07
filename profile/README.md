@@ -130,7 +130,23 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 ***请务必在提交代码前对代码进行格式化，具体规范请参考以下文档***
 
 - [C++](standard.cpp.md) — 完整命名规则、`.clang-format` / `.clang-tidy` 模板与已知反例见 skill：[`.agent/skills/aim-common-rules/references/cpp-formatting.md`](../.agent/skills/aim-common-rules/references/cpp-formatting.md)
-- [Python](standard.py.md) — autopep8 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md)
+- [Python](standard.py.md) — autopep8 + isort 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md)
+
+### 1.6 Visual Studio Code 系插件推荐
+
+战队推荐统一安装以下 VS Code 系插件（括号内为扩展 ID）：
+
+- `ms-python.python` # Python 主扩展（语言服务由 Pylance 提供）
+- `ms-python.vscode-pylance` # 类型检查 / 智能提示，配置见 [`python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md) §6
+- `ms-python.autopep8` # Python 格式化
+- isort 排序已内置于 Python 扩展的「Organize Imports」，无需单独安装
+- `llvm-vs-code-extensions.vscode-clangd` # C++ 语言服务，自动读取 `.clang-format` / `.clang-tidy`
+- `streetsidesoftware.code-spell-checker` # 拼写检查（美式英语）
+- `editorconfig.editorconfig` # 统一缩进 / 换行风格
+
+> **代码、注释、commit message 一律使用美式英语**（如 `color` / `behavior` / `optimize`，而非 *colour* / *behaviour* / *optimise*）。cSpell 报错的词先核对：若确属正确（战队 / 领域术语、缩写、专有名词，且为美式英语拼写），加入 `.vscode/settings.json` 的 `cSpell.words` 数组学习，不要直接忽略或放过真正的拼写错误。
+>
+> 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](../.agent/skills/aim-common-rules/assets/.vscode/extensions.json)（插件推荐）与 [`.agent/skills/aim-common-rules/assets/.vscode/settings.json`](../.agent/skills/aim-common-rules/assets/.vscode/settings.json)（含 `cSpell.words`、format-on-save、Pylance）——放到仓库根目录 `.vscode/` 即可。
 
 ## **2. Agentic Skill (aim-common-rules)**
 
