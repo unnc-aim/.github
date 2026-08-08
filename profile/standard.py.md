@@ -24,6 +24,6 @@
 
 组内按字母序，`import x` 排在 `from x import y` 之前。配置见 `setup.cfg` 的 `[isort]` 段（`line_length = 79`，其余用 isort 默认）；提交前先跑 `isort .`，再跑 autopep8。
 
-> 完整配置、编辑器集成与 CI 用法见 skill：[`python-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/python-formatting.md) §5。
+> 完整配置、编辑器集成与 CI 用法见 skill：[`python-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/python-formatting.md) §5。
 
 ## **请务必在提交代码前使用上述工具对代码进行格式化**
