@@ -46,9 +46,9 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 - 去掉前缀后的目录名必须与 ROS 包 `package.xml` 中的 `<name>` 一致；比赛前缀只出现在 GitHub 仓库名里。
 - 无比赛前缀的可复用包（如 `Camera2Topic`、`ros2_hik_camera`）保持原名直接放入 `src/`。
-- 完整规则、示例表与已知反例见 skill：[`.agent/skills/aim-common-rules/references/workspace-organization.md`](../.agent/skills/aim-common-rules/references/workspace-organization.md)。
+- 完整规则、示例表与已知反例见 skill：[`.agent/skills/aim-common-rules/references/workspace-organization.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/workspace-organization.md)。
 
-> 仓库命名完整规范（三种模式、决策树、大小写 / 分隔符对照、已知反例）见 skill：[`.agent/skills/aim-common-rules/references/repo-naming.md`](../.agent/skills/aim-common-rules/references/repo-naming.md)。
+> 仓库命名完整规范（三种模式、决策树、大小写 / 分隔符对照、已知反例）见 skill：[`.agent/skills/aim-common-rules/references/repo-naming.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/repo-naming.md)。
 
 ### 1.2 仓库内容规范
 
@@ -126,21 +126,21 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
       - BREAKING CHANGE：如果变更会导致不兼容，说明影响范围和解决方案。
       - Issues：引用相关问题或任务编号，例如 Closes #123 或 Refs #456。
 
-> 分支命名与 commit message 完整规范（字段说明、`type` 取值、PR 流程）见 skill：[`.agent/skills/aim-common-rules/references/git-workflow.md`](../.agent/skills/aim-common-rules/references/git-workflow.md)。
+> 分支命名与 commit message 完整规范（字段说明、`type` 取值、PR 流程）见 skill：[`.agent/skills/aim-common-rules/references/git-workflow.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/git-workflow.md)。
 
 ### 1.5 代码规范
 
 ***请务必在提交代码前对代码进行格式化，具体规范请参考以下文档***
 
-- [C++](standard.cpp.md) — 完整命名规则、`.clang-format` / `.clang-tidy` 模板与已知反例见 skill：[`.agent/skills/aim-common-rules/references/cpp-formatting.md`](../.agent/skills/aim-common-rules/references/cpp-formatting.md)
-- [Python](standard.py.md) — autopep8 + isort 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md)
+- [C++](standard.cpp.md) — 完整命名规则、`.clang-format` / `.clang-tidy` 模板与已知反例见 skill：[`.agent/skills/aim-common-rules/references/cpp-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/cpp-formatting.md)
+- [Python](standard.py.md) — autopep8 + isort 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/python-formatting.md)
 
 ### 1.6 Visual Studio Code 系插件推荐
 
 战队推荐统一安装以下 VS Code 系插件（括号内为扩展 ID）：
 
 - `ms-python.python` # Python 主扩展（语言服务由 Pylance 提供）
-- `ms-python.vscode-pylance` # 类型检查 / 智能提示，配置见 [`python-formatting.md`](../.agent/skills/aim-common-rules/references/python-formatting.md) §6
+- `ms-python.vscode-pylance` # 类型检查 / 智能提示，配置见 [`python-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/references/python-formatting.md) §6
 - `ms-python.autopep8` # Python 格式化
 - isort 排序已内置于 Python 扩展的「Organize Imports」，无需单独安装
 - `llvm-vs-code-extensions.vscode-clangd` # C++ 语言服务，自动读取 `.clang-format` / `.clang-tidy`
@@ -149,18 +149,18 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 > **代码、注释、commit message 一律使用美式英语**（如 `color` / `behavior` / `optimize`，而非 *colour* / *behaviour* / *optimise*）。cSpell 报错的词先核对：若确属正确（战队 / 领域术语、缩写、专有名词，且为美式英语拼写），加入 `.vscode/settings.json` 的 `cSpell.words` 数组学习，不要直接忽略或放过真正的拼写错误。
 >
-> 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](../.agent/skills/aim-common-rules/assets/.vscode/extensions.json)（插件推荐）与 [`.agent/skills/aim-common-rules/assets/.vscode/settings.json`](../.agent/skills/aim-common-rules/assets/.vscode/settings.json)（含 `cSpell.words`、format-on-save、Pylance）——放到仓库根目录 `.vscode/` 即可。
+> 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/assets/.vscode/extensions.json)（插件推荐）与 [`.agent/skills/aim-common-rules/assets/.vscode/settings.json`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/master/.agent/skills/aim-common-rules/assets/.vscode/settings.json)（含 `cSpell.words`、format-on-save、Pylance）——放到仓库根目录 `.vscode/` 即可。
 
 ## **2. Agentic Skill (aim-common-rules)**
 
-上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于本仓库 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ 代码**等场景自动调用本规范。
+上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于 [`unnc-aim/aim-common-agentic-skills`](https://github.com/unnc-aim/aim-common-agentic-skills) 的 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ 代码**等场景自动调用本规范。
 
 ### 2.1 安装
 
 用 [skills](https://github.com/vercel-labs/skills) CLI（`npx skills`，会自动识别并安装到你本地的所有 agent——Claude Code / Cursor / Codex 等），整个 skill 目录（`SKILL.md` + `references/` + `assets/`）会一并装好：
 
 ```bash
-npx skills add unnc-aim/.github --skill aim-common-rules -g
+npx skills add unnc-aim/aim-common-agentic-skills --skill aim-common-rules -g
 ```
 
 - `-g` 全局（所有项目，推荐）；不加 `-g` 则装到当前项目 `.agents/skills/`。
@@ -178,4 +178,4 @@ npx skills add unnc-aim/.github --skill aim-common-rules -g
 
 `npx skills add` 会自动把 skill 装到这些工具（Cursor / Codex 等读取 `.agents/skills/`，Claude Code 走符号链接），无需额外配置。skill 自带的格式化规则文件（`assets/` 下的 `.clang-format` / `.clang-tidy` / `setup.cfg`）需要拷到你的仓库根目录，编辑器 / `clang-format` / `autopep8` / CI 才会自动读取；若仓库已有同名文件（如 ROS 的 `setup.cfg`），请手动合并而非覆盖。
 
-规范全文也可直接在 GitHub 阅读：[`.agent/skills/aim-common-rules/references`](https://github.com/unnc-aim/.github/tree/main/.agent/skills/aim-common-rules/references)（仓库命名 / Git 流程 / Python / C++ 格式化）。
+规范全文也可直接在 GitHub 阅读：[`.agent/skills/aim-common-rules/references`](https://github.com/unnc-aim/aim-common-agentic-skills/tree/master/.agent/skills/aim-common-rules/references)（仓库命名 / Git 流程 / Python / C++ 格式化）。
