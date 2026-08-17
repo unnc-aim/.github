@@ -1,47 +1,12 @@
 {
-    "cSpell.words": [
-        "agentic",
-        "Allman",
-        "Altium",
-        "ament",
-        "analyzer",
-        "Arduino",
-        "autopep",
-        "behavior",
-        "Clion",
-        "colcon",
-        "Constexpr",
-        "courseworks",
-        "cstr",
-        "DCMAKE",
-        "defaultdict",
-        "gotchas",
-        "HEADERFILE",
-        "ifndef",
-        "incl",
-        "isort",
-        "Keil",
-        "lijie",
-        "mvcam",
-        "nullptr",
-        "numpy",
-        "pycache",
-        "pytest",
-        "rclpy",
-        "realsense",
-        "reflow",
-        "rigor",
-        "Robo",
-        "Robocon",
-        "stdlib",
-        "UNNC",
-        "vendored",
-        "venv",
-        "Werror",
-        "xaver",
-        "yapf",
-        "YYRC",
-        "YYRM",
-        "YYUL"
-    ],
+  // Spelling baseline for editing the org profile docs.
+  // Shared baseline for code repos: the aim-common-rules skill's
+  // assets/.vscode/settings.json (see profile/README.md §1.6).
+  "cSpell.language": "en-us",
+  "cSpell.words": [
+    "dbaeumer",
+    "esbenp",
+    "gofmt",
+    "goimports"
+  ]
 }

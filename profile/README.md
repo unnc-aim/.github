@@ -68,6 +68,9 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 **保证所有功能稳定可靠的才可 merge 到 `main` 分支**
 
+- PR 合并方式统一使用 **merge commit**（保留完整分支历史）；一般情况下**无需 squash 或 rebase**
+- GitHub 仓库设置建议：默认分支 `main`；PR merge 后自动删除 head 分支；保护 `main` 分支（禁止 force push、要求 PR 通过后才可合并）
+
 阶段性成果标记使用 `tag`, tag 命名规范为三位数字，第一位为大版本号，第二位为小版本号，第三位为修订号，如 `v1.0.0`、`v1.0.1`、`v1.1.0` 等。
 
 ### 1.4 Git Message Regulation
@@ -134,6 +137,10 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 - [C++](standard.cpp.md) — 完整命名规则、`.clang-format` / `.clang-tidy` 模板与已知反例见 skill：[`.agent/skills/aim-common-rules/references/cpp-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/cpp-formatting.md)
 - [Python](standard.py.md) — autopep8 + isort 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/python-formatting.md)
+- [TypeScript](standard.ts.md) — Prettier（**2 空格缩进**）+ ESLint，包管理器 pnpm（特殊场景除外）；配置模板见 skill：[`.agent/skills/aim-common-rules/references/ts-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/ts-formatting.md)
+- [Go](standard.go.md) — gofmt / goimports 唯一标准；编辑器集成见 skill：[`.agent/skills/aim-common-rules/references/go-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/go-formatting.md)
+- [CMake](standard.cmake.md) — 命令小写、2 空格缩进；modern CMake checklist 见 skill：[`.agent/skills/aim-common-rules/references/cmake-style.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/cmake-style.md)
+- [通用文档 (Markdown / YAML / JSON)](standard.docs.md) — 2 空格缩进等通用风格与 `.editorconfig` 模板见 skill：[`.agent/skills/aim-common-rules/references/docs-style.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/docs-style.md)
 
 ### 1.6 Visual Studio Code 系插件推荐
 
@@ -144,6 +151,9 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 - `ms-python.autopep8` # Python 格式化
 - isort 排序已内置于 Python 扩展的「Organize Imports」，无需单独安装
 - `llvm-vs-code-extensions.vscode-clangd` # C++ 语言服务，自动读取 `.clang-format` / `.clang-tidy`
+- `esbenp.prettier-vscode` # TypeScript / JavaScript 格式化（Prettier）
+- `dbaeumer.vscode-eslint` # ESLint
+- `golang.go` # Go 语言支持，保存时自动 gofmt / goimports
 - `streetsidesoftware.code-spell-checker` # 拼写检查（美式英语）
 - `editorconfig.editorconfig` # 统一缩进 / 换行风格
 
@@ -151,9 +161,33 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 >
 > 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/assets/.vscode/extensions.json)（插件推荐）与 [`.agent/skills/aim-common-rules/assets/.vscode/settings.json`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/assets/.vscode/settings.json)（含 `cSpell.words`、format-on-save、Pylance）——放到仓库根目录 `.vscode/` 即可。
 
+### 1.7 推荐 Git 设置
+
+新队员装好 git 后，建议先执行以下全局配置（一次性）：
+
+```bash
+git config --global pull.rebase true           # pull 默认 rebase，保持线性历史
+git config --global init.defaultBranch main    # 新仓库默认分支为 main
+git config --global push.autoSetupRemote true  # 新分支首次直接 git push，无需 -u（git ≥ 2.37）
+git config --global commit.verbose true        # 写 commit message 时编辑器内附完整 diff，便于写准 Conventional Commits
+```
+
+仓库级设置：跨 Windows / macOS / Linux 协作时，在仓库根目录添加 `.gitattributes` 统一换行符，避免 CRLF 产生的无意义 diff：
+
+```text
+* text=auto eol=lf
+*.bat text eol=crlf
+*.sh  text eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary
+```
+
+> 英文版与可直接拷贝的文件见 skill：[`.agent/skills/aim-common-rules/references/git-workflow.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/git-workflow.md) §4 与 [`assets/.gitattributes`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/assets/.gitattributes)。
+
 ## **2. Agentic Skill (aim-common-rules)**
 
-上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于 [`unnc-aim/aim-common-agentic-skills`](https://github.com/unnc-aim/aim-common-agentic-skills) 的 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ 代码**等场景自动调用本规范。
+上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于 [`unnc-aim/aim-common-agentic-skills`](https://github.com/unnc-aim/aim-common-agentic-skills) 的 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ / TypeScript / Go 代码、编写 CMake 与 Markdown / YAML / JSON**等场景自动调用本规范。
 
 ### 2.1 安装
 
