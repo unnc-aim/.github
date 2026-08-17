@@ -137,6 +137,10 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 - [C++](standard.cpp.md) — 完整命名规则、`.clang-format` / `.clang-tidy` 模板与已知反例见 skill：[`.agent/skills/aim-common-rules/references/cpp-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/cpp-formatting.md)
 - [Python](standard.py.md) — autopep8 + isort 配置、CI 用法与 PEP 8 命名表见 skill：[`.agent/skills/aim-common-rules/references/python-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/python-formatting.md)
+- [TypeScript](standard.ts.md) — Prettier（**2 空格缩进**）+ ESLint，包管理器 pnpm（特殊场景除外）；配置模板见 skill：[`.agent/skills/aim-common-rules/references/ts-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/ts-formatting.md)
+- [Go](standard.go.md) — gofmt / goimports 唯一标准；编辑器集成见 skill：[`.agent/skills/aim-common-rules/references/go-formatting.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/go-formatting.md)
+- [CMake](standard.cmake.md) — 命令小写、2 空格缩进；modern CMake checklist 见 skill：[`.agent/skills/aim-common-rules/references/cmake-style.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/cmake-style.md)
+- [通用文档 (Markdown / YAML / JSON)](standard.docs.md) — 2 空格缩进等通用风格与 `.editorconfig` 模板见 skill：[`.agent/skills/aim-common-rules/references/docs-style.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/docs-style.md)
 
 ### 1.6 Visual Studio Code 系插件推荐
 
@@ -147,6 +151,9 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 - `ms-python.autopep8` # Python 格式化
 - isort 排序已内置于 Python 扩展的「Organize Imports」，无需单独安装
 - `llvm-vs-code-extensions.vscode-clangd` # C++ 语言服务，自动读取 `.clang-format` / `.clang-tidy`
+- `esbenp.prettier-vscode` # TypeScript / JavaScript 格式化（Prettier）
+- `dbaeumer.vscode-eslint` # ESLint
+- `golang.go` # Go 语言支持，保存时自动 gofmt / goimports
 - `streetsidesoftware.code-spell-checker` # 拼写检查（美式英语）
 - `editorconfig.editorconfig` # 统一缩进 / 换行风格
 
@@ -180,7 +187,7 @@ git config --global commit.verbose true        # 写 commit message 时编辑器
 
 ## **2. Agentic Skill (aim-common-rules)**
 
-上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于 [`unnc-aim/aim-common-agentic-skills`](https://github.com/unnc-aim/aim-common-agentic-skills) 的 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ 代码**等场景自动调用本规范。
+上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于 [`unnc-aim/aim-common-agentic-skills`](https://github.com/unnc-aim/aim-common-agentic-skills) 的 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ / TypeScript / Go 代码、编写 CMake 与 Markdown / YAML / JSON**等场景自动调用本规范。
 
 ### 2.1 安装
 
