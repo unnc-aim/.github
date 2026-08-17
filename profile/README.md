@@ -68,6 +68,9 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 **保证所有功能稳定可靠的才可 merge 到 `main` 分支**
 
+- PR 合并方式统一使用 **merge commit**（保留完整分支历史）；一般情况下**无需 squash 或 rebase**
+- GitHub 仓库设置建议：默认分支 `main`；PR merge 后自动删除 head 分支；保护 `main` 分支（禁止 force push、要求 PR 通过后才可合并）
+
 阶段性成果标记使用 `tag`, tag 命名规范为三位数字，第一位为大版本号，第二位为小版本号，第三位为修订号，如 `v1.0.0`、`v1.0.1`、`v1.1.0` 等。
 
 ### 1.4 Git Message Regulation
@@ -150,6 +153,30 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 > **代码、注释、commit message 一律使用美式英语**（如 `color` / `behavior` / `optimize`，而非 *colour* / *behaviour* / *optimise*）。cSpell 报错的词先核对：若确属正确（战队 / 领域术语、缩写、专有名词，且为美式英语拼写），加入 `.vscode/settings.json` 的 `cSpell.words` 数组学习，不要直接忽略或放过真正的拼写错误。
 >
 > 现成模板见 skill：[`.agent/skills/aim-common-rules/assets/.vscode/extensions.json`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/assets/.vscode/extensions.json)（插件推荐）与 [`.agent/skills/aim-common-rules/assets/.vscode/settings.json`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/assets/.vscode/settings.json)（含 `cSpell.words`、format-on-save、Pylance）——放到仓库根目录 `.vscode/` 即可。
+
+### 1.7 推荐 Git 设置
+
+新队员装好 git 后，建议先执行以下全局配置（一次性）：
+
+```bash
+git config --global pull.rebase true           # pull 默认 rebase，保持线性历史
+git config --global init.defaultBranch main    # 新仓库默认分支为 main
+git config --global push.autoSetupRemote true  # 新分支首次直接 git push，无需 -u（git ≥ 2.37）
+git config --global commit.verbose true        # 写 commit message 时编辑器内附完整 diff，便于写准 Conventional Commits
+```
+
+仓库级设置：跨 Windows / macOS / Linux 协作时，在仓库根目录添加 `.gitattributes` 统一换行符，避免 CRLF 产生的无意义 diff：
+
+```text
+* text=auto eol=lf
+*.bat text eol=crlf
+*.sh  text eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary
+```
+
+> 英文版与可直接拷贝的文件见 skill：[`.agent/skills/aim-common-rules/references/git-workflow.md`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/references/git-workflow.md) §4 与 [`assets/.gitattributes`](https://github.com/unnc-aim/aim-common-agentic-skills/blob/main/.agent/skills/aim-common-rules/assets/.gitattributes)。
 
 ## **2. Agentic Skill (aim-common-rules)**
 
