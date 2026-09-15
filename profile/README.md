@@ -10,12 +10,18 @@
 
 #### 1.1.1. `[2位数年份][比赛大写简写]_[机器人名(如有)]_[包名]` - 针对 某年、某比赛、某机器人 的一次性仓库
 
+- 年份使用两位数（如 2026 年为 `26`，2025 年为 `25`）
+- 比赛简写保持全大写（如 `RC` / `UC` / `UL` 等）
+- 机器人名如有，整体 PascalCase，多词连写（如 `Sentry`、`Infantry`、`NormalHero`、`R1`、`R2`）
+- 包名段保持小写，`snake_case`
+
 样例：
 
 - `26RC_R2_ws` - 2026年 Robocon 主赛 R2 机器人主 Workspace 仓库
 - `26RC_R2_kfs_tracker` - 2026年 Robocon 主赛 R2 机器人 KFS 视觉跟踪仓库，注意如果是 ROS Package 的话，`package.xml` 中的 `<name>` 标签需要与仓库中包名部分保持一致，包名单词间也使用下划线 `_` 分隔
 - `26RC_R1_arm_controller` - 2026年 Robocon 主赛 R1 机械臂控制器仓库，包名同理
 - `26RC_interfaces` - 2026年 Robocon 主赛通用接口仓库，如果是同场比赛跨机器人使用的仓库，命名可以省略机器人部分
+- `26UL_Sentry_ws` - 2026年 RM 联盟赛哨兵机器人主 Workspace 仓库，机器人名整体 PascalCase
 - `25RM_raw_rm_vision` - 2025年 RoboMaster 联盟赛 RM 视觉主仓库，包名同理
 
 #### 1.1.2. `aim-[4位学年名]-[包名]` - 针对 AIM 战队内部的 非赛用、单学年/长期 仓库
