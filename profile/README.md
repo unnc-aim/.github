@@ -174,6 +174,7 @@ git submodule add https://github.com/unnc-aim/26RC_R2_arm_controller.git src/arm
 
 ```bash
 git config --global pull.rebase true           # pull 默认 rebase，保持线性历史
+git config --global rebase.autoStash true      # rebase（含 pull 默认 rebase）前自动 stash 脏工作区改动、结束后恢复，未提交修改不再中断 pull
 git config --global init.defaultBranch main    # 新仓库默认分支为 main
 git config --global push.autoSetupRemote true  # 新分支首次直接 git push，无需 -u（git ≥ 2.37）
 git config --global commit.verbose true        # 写 commit message 时编辑器内附完整 diff，便于写准 Conventional Commits
