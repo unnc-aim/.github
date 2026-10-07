@@ -206,7 +206,7 @@ git config --global commit.verbose true        # 写 commit message 时编辑器
 让 AI 协作时，Agent 还必须遵守以下行为约束（已内置于 `aim-common-rules` skill，安装后自动生效，见 §2）：
 
 - **未经用户当次任务明确要求，绝不执行 / 协助 `git commit` / `git push`**——包括 `--force`、`--tags` 等变体，脚手架 / 包管理器的自动提交，以及 husky、lint-staged 等钩子的间接触发；上一次任务的授权**不会延续**到下一次任务。只读操作（`git status` / `git diff` / `git log` 等）不受限制。
-- **未经用户明确许可，禁止直接调用 `gh` CLI**——所有子命令一律受限，只读（`gh pr view` / `gh run list` / `gh api`）与可变更（`gh pr create` / `gh pr merge` / `gh release` 等）同等对待：`gh` 以你的凭据操作团队可见资源（PR / issue / release / 仓库），每次调用都是对外动作。任务需要 GitHub 操作时，Agent 应说明将运行的命令、等用户放行或由用户自己执行。
+- **`gh` 只读命令不受限，写操作需明确许可**——`gh pr list / view / diff / checks`、`gh issue list / view`、`gh run list / view`、`gh repo view`、`gh release view`、`gh api` GET 等读操作可自由使用（同 git 只读）；但**未经用户当次任务明确许可，绝不执行任何写入 GitHub 的命令**：`gh pr create / merge / close / review / comment`、`gh issue create / close`、`gh release create / delete`、`gh repo create / delete`、`gh run rerun / cancel`、`gh api --method POST / PATCH / DELETE` 等——写操作以你的凭据变更团队可见资源（PR / issue / release / 仓库），属对外动作；授权同样**不跨任务延续**，不确定是否写入时先问。需要 GitHub 写操作时，Agent 应说明将运行的命令、等用户放行或由用户自己执行。
 - **绝不给 commit 添加 AI 的 `Co-Authored-By` 署名**——即使在被明确允许代为提交的例外情形下。
 - 代码类任务结束时，Agent 会**建议**一条单行 commit message（Conventional Commits 格式、整行 ≤50 字符、美式英语）供用户自行提交——**只建议、绝不执行**。
 
@@ -216,7 +216,7 @@ git config --global commit.verbose true        # 写 commit message 时编辑器
 
 上述全部规范已封装为一个 agentic skill：`aim-common-rules`，位于 [`unnc-aim/aim-common-agentic-skills`](https://github.com/unnc-aim/aim-common-agentic-skills) 的 `.agent/skills/aim-common-rules/`。安装后，Agent 会在**创建 / 命名仓库、核对 ROS2 包名、新建分支、撰写 commit message、格式化 Python / C++ / TypeScript / Go 代码、编写 CMake 与 Markdown / YAML / JSON**等场景自动调用本规范。
 
-skill 同时内置 Agent Git 行为约束与责任规范（见 §1.8）：默认不 commit / push、不直接调用 `gh` CLI、不给 commit 添加 AI `Co-Authored-By` 署名，任务结束仅**建议** commit message。
+skill 同时内置 Agent Git 行为约束与责任规范（见 §1.8）：默认不 commit / push、`gh` 写操作需明确许可（只读不受限）、不给 commit 添加 AI `Co-Authored-By` 署名，任务结束仅**建议** commit message。
 
 ### 2.1 安装
 
